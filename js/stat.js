@@ -8,21 +8,21 @@ var FONT_GAP = 20; // высота строки
 var COLUMN_GAP = 50; // отступ от левого и правого края, отступ между столбцами
 
 // функция поиска максимального элемента в массиве
-var getMaxElement = function(arr) {
-  var maxElement =  Math.max.apply(null, arr);
+var getMaxElement = function (arr) {
+  var maxElement = Math.max.apply(null, arr);
   return maxElement;
 };
 
 // функция получения случайного числа в интервале
-var getRandomInteger = function(min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1)
+var getRandomInteger = function (min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
   return rand;
 };
 
 // функция отрисовки облака
 // ctx - контекст отрисовки, x и y - координаты, color - цвет облака
-var renderCloud = function(ctx, x, y, color) {
+var renderCloud = function (ctx, x, y, color) {
   var CLOUD_WIDTH = 420; // ширина облака
   var CLOUD_HEIGHT = 270; // высота облака
 
@@ -42,13 +42,13 @@ var renderCloud = function(ctx, x, y, color) {
 
 // функция отрисовки столбцов статистики
 // ctx - контекст отрисовки, names - массив имен игроков, times - массив результатов игроков
-var renderColumn = function(ctx, names, times) {
+var renderColumn = function (ctx, names, times) {
   var COLUMN_WIDTH = 40; // ширина столбца
   var COLUMN_HEIGHT = 150; // максимальная высота столбца
 
   var maxTime = getMaxElement(times);
 
-  names.forEach( function(name, i, names) {
+  names.forEach(function (name, i) {
     var x = CLOUD_X + COLUMN_GAP + (COLUMN_WIDTH + COLUMN_GAP) * i;
     var currentHeight = (COLUMN_HEIGHT * times[i]) / maxTime; // высота текущего столбца
 
@@ -66,14 +66,14 @@ var renderColumn = function(ctx, names, times) {
 
 // функция отрисовки поздравительного текста
 // ctx - контекст отрисовки
-var printCongratulation = function(ctx) {
+var printCongratulation = function (ctx) {
   ctx.fillStyle = '#000';
 
   ctx.fillText('Ура, вы победили!', CLOUD_X + COLUMN_GAP, CLOUD_Y + GAP + FONT_GAP);
   ctx.fillText('Список результатов:', CLOUD_X + COLUMN_GAP, CLOUD_Y + GAP + FONT_GAP * 2);
 };
 
-window.renderStatistics = function(ctx, names, times) {
+window.renderStatistics = function (ctx, names, times) {
   var CLOUD_GAP = 10; // отступ для тени
 
   // тень

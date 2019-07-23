@@ -1,28 +1,28 @@
 'use strict';
 
-var N = 4; // количество похожих персонажей
-
-// функция генерации случайного числа в интервале
-var getRandomInteger = function (min, max) {
+// функция, которая возвращает случайный элемент массива
+var getRandomElement = function (array) {
+  var min = 0;
+  var max = array.length - 1;
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   rand = Math.round(rand);
-  return rand;
+  return array[rand];
 };
 
 
 // функция создания объектов с похожими персонажами
-var generateCharacters = function () {
+var generateCharacters = function (charactersNumber) {
   var firstName = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
   var secondName = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
   var coatColor = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var eyesColor = ['black', 'red', 'blue', 'yellow', 'green'];
   var characters = [];
 
-  for (var i = 0; i < N; i++) {
+  for (var i = 0; i < charactersNumber; i++) {
     var character = {};
-    character.name = firstName[getRandomInteger(0, firstName.length - 1)] + ' ' + secondName[getRandomInteger(0, secondName.length - 1)];
-    character.coatColor = coatColor[getRandomInteger(0, coatColor.length - 1)];
-    character.eyesColor = eyesColor[getRandomInteger(0, eyesColor.length - 1)];
+    character.name = getRandomElement(firstName) + ' ' + getRandomElement(secondName);
+    character.coatColor = getRandomElement(coatColor);
+    character.eyesColor = getRandomElement(eyesColor);
     characters[i] = character;
   }
   return characters;
@@ -48,22 +48,30 @@ var createCharacter = function (character) {
 
 // функцию заполнения блока DOM-элементами на основе массива JS-объектов
 var renderCharacter = function () {
+  var CHARACTERS_NUMBER = 4; // количество похожих персонажей
+
   var similarListElement = document.querySelector('.setup-similar-list');
-  var characters = generateCharacters();
+
+  var characters = generateCharacters(CHARACTERS_NUMBER);
 
   // отрисовка шаблона в документ
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < N; i++) {
-    fragment.appendChild(createCharacter(characters[i]));
-  }
+
+  characters.forEach(function (character) {
+    fragment.appendChild(createCharacter(character));
+  });
+
   similarListElement.appendChild(fragment);
 };
 
 
-// показываем окно настроек пользователя
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+var showCharacterProfile = function () {
+  // показываем окно настроек пользователя
+  var userDialog = document.querySelector('.setup');
+  userDialog.classList.remove('hidden');
+  userDialog.querySelector('.setup-similar').classList.remove('hidden'); // показываем блок с похожими персонажами
+};
 
+
+showCharacterProfile();
 renderCharacter();
-
-userDialog.querySelector('.setup-similar').classList.remove('hidden'); // показываем блок с похожими персонажами
